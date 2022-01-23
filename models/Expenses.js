@@ -8,7 +8,7 @@ const expensesSchema = new Schema({
         required: true
     },
     date: {
-        type: String,
+        type: Object,
         required: true
     },
     amount: {
@@ -19,6 +19,7 @@ const expensesSchema = new Schema({
         type: String,
         required: true
     }
-})
+},
+    { timestamps: true })
 
 export const Expenses = mongoose.model('Expenses', expensesSchema, "expenses")

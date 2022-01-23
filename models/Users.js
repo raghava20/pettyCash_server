@@ -14,7 +14,11 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    resetLink: {
+        dataType: String,
+        default: ''
     }
-})
+}, { timestamps: true })
 
 export const User = mongoose.model('User', userSchema, "users")
