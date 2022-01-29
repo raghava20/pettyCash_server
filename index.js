@@ -30,19 +30,18 @@ app.get('/', (req, res) => {
     res.send("Hello World!!!")
 })
 
-//Before
+//Authentication
 app.use("/signup", signupRouter)
 app.use("/login", loginRouter)
 app.use("/forgot-password", forgotPasswordRouter)
 app.use("/reset-password", resetPasswordRouter)
 
-//After
+//Authorization
 app.use("/dashboard", auth, dashboardRouter)
 app.use("/dashboard/print-details", printDetailsRouter)
 app.use("/add-expenses", auth, addExpensesRouter)
 app.use("/expenses-list", auth, expensesListRouter)
 app.use("/expenses-list/:id", auth, expensesListRouter)
 app.use("/transferred-amount", auth, transferredAmountRouter)
-
 
 app.listen(PORT, () => { console.log("App is running on: " + PORT) });

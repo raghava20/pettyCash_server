@@ -1,36 +1,30 @@
 import express from "express";
 import { DashboardAmt } from "../models/DashboardAmt.js";
-import { PrintDetails } from "../models/PrintDetails.js"
 
 const router = express.Router();
 
-
 router.route("/").get(async (req, res) => {
     try {
-        var response = await DashboardAmt.find();
+        var response = await DashboardAmt.find();           //find will get all data from respective collection
         res.send(response)
     }
     catch (err) {
         res.send(err)
     }
-
 }).post(async (req, res) => {
-    const { amount } = req.body;
-
-    const acc = new DashboardAmt({
+    const { amount } = req.body;                            //Destructured the data from UI
+    const acc = new DashboardAmt({                          //schema to add data to respective collection
         amount: amount,
     })
-
     try {
-        var response = await acc.save();
+        var response = await acc.save();                    //saving data to database
         res.send(response);
     }
     catch (err) {
         res.status(500).send(err);
     }
-
 }).delete(async (req, res) => {
-    var response = await DashboardAmt.deleteMany();
+    var response = await DashboardAmt.deleteMany();        //delete all data in the respective collection
     res.send(response)
 })
 

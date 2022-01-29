@@ -8,20 +8,22 @@ const router = express.Router();
 router.route("/").put((req, res) => {
     const { email } = req.body;
 
-    User.findOne({ email: email }, (err, user) => {
-        if (err || !user) {
+    User.findOne({ email: email }, (err, user) => {                  //findOne will check the db with the email provided
+        if (err || !user) {                                          //return if email not exists
             return res.status(400).send({ message: "User with this email doesn't exists." })
         }
+
+        //creating token
         const token = jwt.sign({ _id: user._id }, process.env.RESET_PASSWORD_KEY, { expiresIn: "20m" })
 
-        var transporter = nodemailer.createTransport({
+        var transporter = nodemailer.createTransport({              //nodemailer package for sending email messages
             service: "gmail",
             auth: {
                 user: process.env.ACC_EMAIL,
                 pass: process.env.ACC_PASSWORD
             }
         })
-        var mailOptions = {
+        var compose = {
             from: process.env.ACC_EMAIL,
             to: email,
             subject: "Your New Password Resetting Link",
@@ -30,18 +32,16 @@ router.route("/").put((req, res) => {
         }
 
         try {
-            return user.updateOne({ resetLink: token }, (err, success) => {
+            return user.updateOne({ resetLink: token }, (err, success) => {      //updateOne will update the user with current reset link
                 if (err) {
                     return res.status(400).send({ message: "Reset Password link error" })
                 }
                 else {
-                    transporter.sendMail(mailOptions, (err, info) => {
+                    transporter.sendMail(compose, (err, info) => {          //mail will send only if the token is valid
                         if (err) {
-                            console.log(err)
                             return res.send({ message: err.message })
                         }
                         else {
-                            console.log("Email sent" + info.response)
                             return res.send({ message: "Email has been sent, kindly follow the instructions." })
                         }
                     })

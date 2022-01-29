@@ -15,7 +15,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    resetLink: {
+    resetLink: {                            //resetLink will trigger only on forgot password request is processed.
         dataType: String,
         default: ''
     }

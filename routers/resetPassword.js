@@ -6,14 +6,14 @@ import jwt from "jsonwebtoken"
 const router = express.Router();
 
 router.route("/").put((req, res) => {
-
     const { resetLink, newPassword } = req.body;
+
     if (resetLink) {
-        jwt.verify(resetLink, process.env.RESET_PASSWORD_KEY, (err, decodedData) => {
+        jwt.verify(resetLink, process.env.RESET_PASSWORD_KEY, (err, decodedData) => {       //check jwt token is valid or not
             if (err) {
                 return res.send({ message: "Incorrect token or it is expired!" })
             }
-            User.findOne({ resetLink: resetLink }, (err, user) => {
+            User.findOne({ resetLink: resetLink }, (err, user) => {             //findOne will check the db with the resetLink provided
                 if (err || !user) {
                     return res.status(400).send({ message: "User with this token doesn't exists." })
                 }
@@ -22,7 +22,7 @@ router.route("/").put((req, res) => {
                     password: newPassword,
                     resetLink: ''
                 }
-                user = _.extend(user, obj)
+                user = _.extend(user, obj)                  //lodash library for updating user with provided data
                 user.save((err, result) => {
                     if (err) {
                         return res.status(400).status.send({ message: "Reset Password error" })
@@ -39,8 +39,6 @@ router.route("/").put((req, res) => {
     else {
         return res.status(401).send({ message: "Authentication error!!!" })
     }
-
-
 })
 
 export const resetPasswordRouter = router;
