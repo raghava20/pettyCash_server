@@ -1,6 +1,7 @@
 import express from "express";
 import { User } from "../models/Users.js";
 import _ from "lodash";
+import jwt from "jsonwebtoken"
 
 const router = express.Router();
 
