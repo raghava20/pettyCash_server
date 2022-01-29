@@ -4,6 +4,7 @@ import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 
 const router = express.Router();
+const CLIENT_URL = "https://quirky-keller-607fbf.netlify.app"
 
 router.route("/").put((req, res) => {
     const { email } = req.body;
@@ -28,7 +29,7 @@ router.route("/").put((req, res) => {
             to: email,
             subject: "Your New Password Resetting Link",
             html: `<h2>Please click on given link to reset your password</h2>
-                <p>http://localhost:3000/reset-password/${token}</p>`
+                <p>${CLIENT_URL}/reset-password/${token}</p>`
         }
 
         try {
