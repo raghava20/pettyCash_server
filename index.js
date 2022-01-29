@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from "dotenv";
 import { mongo } from "./connection.js"
 import { dashboardRouter } from "./routers/dashboard.js"
+import { printDetailsRouter } from "./routers/printDetails.js"
 import { addExpensesRouter } from "./routers/addExpenses.js";
 import { expensesListRouter } from './routers/expensesList.js';
 import { transferredAmountRouter } from "./routers/transferredAmount.js";
@@ -36,11 +37,12 @@ app.use("/forgot-password", forgotPasswordRouter)
 app.use("/reset-password", resetPasswordRouter)
 
 //After
-app.use("/dashboard", dashboardRouter)
-app.use("/add-expenses", addExpensesRouter)
-app.use("/expenses-list", expensesListRouter)
-app.use("/expenses-list/:id", expensesListRouter)
-app.use("/transferred-amount", transferredAmountRouter)
+app.use("/dashboard", auth, dashboardRouter)
+app.use("/dashboard/print-details", printDetailsRouter)
+app.use("/add-expenses", auth, addExpensesRouter)
+app.use("/expenses-list", auth, expensesListRouter)
+app.use("/expenses-list/:id", auth, expensesListRouter)
+app.use("/transferred-amount", auth, transferredAmountRouter)
 
 
 app.listen(PORT, () => { console.log("App is running on: " + PORT) });
