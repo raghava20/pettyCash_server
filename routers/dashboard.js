@@ -1,13 +1,13 @@
 import express from "express";
-import { Expenses } from "../models/Expenses.js";
-import { Accounts } from "../models/Accounts.js";
+import { DashboardAmt } from "../models/DashboardAmt.js";
+import { PrintDetails } from "../models/PrintDetails.js"
 
 const router = express.Router();
 
 
 router.route("/").get(async (req, res) => {
     try {
-        var response = await Expenses.find();
+        var response = await DashboardAmt.find();
         res.send(response)
     }
     catch (err) {
@@ -15,12 +15,11 @@ router.route("/").get(async (req, res) => {
     }
 
 }).post(async (req, res) => {
-    const { accountName } = req.body;
+    const { amount } = req.body;
 
-    const acc = new Accounts({
-        accountName: accountName,
+    const acc = new DashboardAmt({
+        amount: amount,
     })
-    console.log(acc)
 
     try {
         var response = await acc.save();
@@ -30,7 +29,9 @@ router.route("/").get(async (req, res) => {
         res.status(500).send(err);
     }
 
+}).delete(async (req, res) => {
+    var response = await DashboardAmt.deleteMany();
+    res.send(response)
 })
-
 
 export const dashboardRouter = router;

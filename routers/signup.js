@@ -23,7 +23,7 @@ router.route("/").post(async (req, res) => {
     try {
 
         var response = await user.save();
-        res.send(response)
+        res.send({ message: "Successfully Registered!" })
     }
     catch (err) {
         res.send(err);
