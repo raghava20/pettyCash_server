@@ -44,7 +44,7 @@ router.route("/").put((req, res) => {
             })
         }
         catch (err) {
-            console.log(err)
+            return res.status(500).send({ message: err })
         }
     });
 
